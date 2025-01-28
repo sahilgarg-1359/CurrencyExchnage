@@ -25,7 +25,7 @@ public class FetchExchangeRate : ControllerBase
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception($"Failed to fetch exchange rates. Status code: {response.StatusCode}");
+                throw new Exception($"Unable to fetch exhange rate: {response.StatusCode}");
             }
 
             string responseData = await response.Content.ReadAsStringAsync();
@@ -41,20 +41,20 @@ public class FetchExchangeRate : ControllerBase
         }
     }
 
-    public double Convert(string fromCurrency, string toCurrency, double amount)
+    public double Convert(string firstCurrency, string secondCurrency, double amount)
     {
-        if (!exchangeRates.ContainsKey(fromCurrency))
+        if (!exchangeRates.ContainsKey(firstCurrency))
         {
-            throw new ArgumentException($"Unsupported currency code: {fromCurrency}");
+            throw new ArgumentException($"Invalid currency code: {firstCurrency}");
         }
-        if (!exchangeRates.ContainsKey(toCurrency))
+        if (!exchangeRates.ContainsKey(secondCurrency))
         {
-            throw new ArgumentException($"Unsupported currency code: {toCurrency}");
+            throw new ArgumentException($"Invalid currency code: {secondCurrency}");
         }
 
         // Convert from the source currency to EUR, then to the target currency
-        double amountInBase = amount / exchangeRates[fromCurrency];
-        double convertedAmount = amountInBase * exchangeRates[toCurrency];
+        double amountInBase = amount / exchangeRates[firstCurrency];
+        double convertedAmount = amountInBase * exchangeRates[secondCurrency];
         return convertedAmount;
     }
 }

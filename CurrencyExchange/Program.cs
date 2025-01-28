@@ -20,7 +20,7 @@ class Program
             Console.Write("Enter the amount: ");
             double amount = Convert.ToDouble(Console.ReadLine());
 
-            Console.Write("Do you want exchange rate by any Date: ");
+            Console.Write("Do you want exchange rate by any specific Date: ");
             string answer = Console.ReadLine();
 
             FetchExchangeRate converter = new FetchExchangeRate();
