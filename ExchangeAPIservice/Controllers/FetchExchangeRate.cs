@@ -10,12 +10,13 @@ using Newtonsoft.Json;
 public class FetchExchangeRate : ControllerBase
 {
     private const string FixerApiKey = "20b8a5d34f31e82e810157230e3a7d53";
-    private const string BaseUrl = "http://data.fixer.io/api/latest";
+    private const string BaseUrl = "http://data.fixer.io/api/";
     private Dictionary<string, double> exchangeRates;
 
-    public async Task LoadRatesAsync()
+    public async Task LoadRatesAsync(string date)
     {
-        string url = $"{BaseUrl}?access_key={FixerApiKey}";
+        string url = $"{BaseUrl}{date}?access_key={FixerApiKey}";
+        Console.WriteLine(url);
 
         using (HttpClient client = new HttpClient())
         {

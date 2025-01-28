@@ -7,9 +7,7 @@ class Program
 {
     static async Task Main()
     {
-        Console.WriteLine("Currency Converter (Using Fixer.io API)");
-        Console.WriteLine("Supported currencies: USD, EUR, GBP, INR, JPY, AUD, CAD, CNY\n");
-
+    
         try
         {
             Console.Write("Enter the source currency code: ");
@@ -18,25 +16,23 @@ class Program
             Console.Write("Enter the target currency code: ");
             string toCurrency = Console.ReadLine().ToUpper();
 
-            Console.Write("Enter the amount in the source currency: ");
+            Console.Write("Enter the amount: ");
             double amount = Convert.ToDouble(Console.ReadLine());
 
-            Console.Write("Do you want exchange Rate by any Date: ");
+            Console.Write("Do you want exchange rate by any Date: ");
             string answer = Console.ReadLine();
 
             FetchExchangeRate converter = new FetchExchangeRate();
-
+            string date = "latest";
             if (answer == "YES")
             {
-                Console.Write("enter the Data in Formate yyyy-mm--dd: ");
-                string date = Console.ReadLine();
+                Console.Write("Enter the Data in Formate yyyy-mm--dd: ");
+                date = Console.ReadLine();
 
-                if (string.IsNullOrEmpty(date))
-                    date = "latest";
             }
 
-            Console.WriteLine("Fetching latest exchange rates...");
-            await converter.LoadRatesAsync();
+            Console.WriteLine("Fetch latest exchange rates-");
+            await converter.LoadRatesAsync(date);
 
             double result = converter.Convert(fromCurrency, toCurrency, amount);
 
