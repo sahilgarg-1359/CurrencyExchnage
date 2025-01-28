@@ -15,6 +15,7 @@ public class FetchExchangeRate : ControllerBase
 
     public async Task LoadRatesAsync(string date)
     {
+
         string url = $"{BaseUrl}{date}?access_key={FixerApiKey}";
         Console.WriteLine(url);
 

@@ -16,6 +16,7 @@ class Program
             Console.Write("Enter the target currency code: ");
             string toCurrency = Console.ReadLine().ToUpper();
 
+
             Console.Write("Enter the amount: ");
             double amount = Convert.ToDouble(Console.ReadLine());
 
