@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "wGdfh58Zf1BRYhhMAjOLvX9NOyWbHg0PspWIINGdJnLxs3SXeklxIb4E1JJAj+zueyredqcHGsZFvpPTpPFitg==",
+  "dgSpecHash": "TuAJXUBnf+F0Ns+XvEGv2d3W4xU8yToTZEkvBMUmfs5VtbgFU9lXCgpikd9ZluU6MmV4WsSfN5AyN3Mw36gJGg==",
   "success": true,
   "projectFilePath": "/Users/sahilgarg/Projects/CurrenyExchange/CurrencyExchange/ExchangeAPIservice/ExchangeAPIservice.csproj",
   "expectedPackageFiles": [
     "/Users/sahilgarg/.nuget/packages/microsoft.aspnetcore.openapi/7.0.20/microsoft.aspnetcore.openapi.7.0.20.nupkg.sha512",
     "/Users/sahilgarg/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "/Users/sahilgarg/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/Users/sahilgarg/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/Users/sahilgarg/.nuget/packages/swashbuckle.aspnetcore/6.5.0/swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
     "/Users/sahilgarg/.nuget/packages/swashbuckle.aspnetcore.swagger/6.5.0/swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
     "/Users/sahilgarg/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.5.0/swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
