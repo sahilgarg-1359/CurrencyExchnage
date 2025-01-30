@@ -1,5 +1,5 @@
 ﻿using DailyExchangeRateUpdater;
-
+using ExchangeRateInfo;
 class DBBatchJob
 {
      public static async Task Main()
@@ -8,8 +8,14 @@ class DBBatchJob
 
         try
         {
-            FetchExchangeRate exchangeRate = new();
-            ExchangeRateUpdater updater = new();
+            //ExchangeRateInfo users = await apiService.FetchUsersAsync();
+
+            //SaveUsersToDatabase(users);
+
+            Console.WriteLine("Data successfully saved to Azure SQL Database!");
+
+            FetchExchangeRate exchangeRate = new FetchExchangeRate();
+            ExchangeRateDbContext updater = new();
 
             Console.WriteLine("Fetching latest exchange rates");
 

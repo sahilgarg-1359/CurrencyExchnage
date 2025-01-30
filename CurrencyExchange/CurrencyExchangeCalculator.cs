@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 public partial class Program
 {
-    private Dictionary<string, double> exchangeRates;
+    private static Dictionary<string, double> exchangeRates;
 
-    public async Task Main()
+    public static async Task Main()
     {
 
         try
@@ -47,7 +47,7 @@ public partial class Program
         }
     }
 
-    public double ConvertCurrency(string firstCurrency, string secondCurrency, double amount)
+    public static double ConvertCurrency(string firstCurrency, string secondCurrency, double amount)
     {
         if (!exchangeRates.ContainsKey(firstCurrency))
         {

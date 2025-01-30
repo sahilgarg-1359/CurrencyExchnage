@@ -1,74 +1,68 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
 using ExchangeAPIservice;
 using ExchangeRateInfo;
+using Microsoft.Data.SqlClient;
+using System;
+using System.Collections.Generic;
+
+using System.Threading.Tasks;
+
 
 namespace DailyExchangeRateUpdater
 {
-    public class ExchangeRateDbContext : DbContext
+    public class ExchangeRateDbContext
     {
 
-        public DbSet<ExchangeRate> ExchangeRate { get; set; }
+        private static readonly string connectionString = "Server=tcp:yourserver.database.windows.net,1433;Database=YourDatabase;User Id=YourUser;Password=YourPassword;Encrypt=True;";
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Replace with your SQL Server connection string
-            optionsBuilder.UseSqlServer(AppSettingConfig.Server_Name, AppSettingConfig.Database_Name, AppSettingConfig.User_Id,AppSettingConfig.Password);
-        }
-    
+        //public DbSet<ExchangeRate> ExchangeRate { get; set; }
 
-    //public class ExchangeRateUpdater
-    //{
-    //    private const string FixerApiKey = "YOUR_FIXER_API_KEY"; // Replace with your Fixer.io API key
-    //    private const string FixerApiUrl = "http://data.fixer.io/api/latest";
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    // Replace with your SQL Server connection string
+        //    optionsBuilder.UseSqlServer(AppSettingConfig.Server_Name, AppSettingConfig.Database_Name, AppSettingConfig.User_Id,AppSettingConfig.Password);
+        //}
 
-    //    public async Task<Dictionary<string, decimal>> FetchLatestRatesAsync()
-    //    {
-    //        string url = $"{FixerApiUrl}?access_key={FixerApiKey}";
+        //public async Task SaveRatesToDatabaseAsync(Dictionary<string, decimal> rates, DateTime date)
+        //{
+        //    using var context = new ExchangeRateDbContext();
 
-    //        using (HttpClient client = new HttpClient())
-    //        {
-    //            HttpResponseMessage response = await client.GetAsync(url);
+        //    // Create database if not exists
+        //    await context.Database.EnsureCreatedAsync();
 
-    //            if (!response.IsSuccessStatusCode)
-    //            {
-    //                throw new Exception($"Failed to fetch exchange rates. Status code: {response.StatusCode}");
-    //            }
+        //    foreach (var rate in rates)
+        //    {
+        //        var exchangeRate = new ExchangeRate
+        //        {
+        //            CurrencyCode = rate.Key,
+        //            Rate = rate.Value,
+        //            Date = date
+        //        };
 
-    //            string responseData = await response.Content.ReadAsStringAsync();
-    //            dynamic json = JsonConvert.DeserializeObject(responseData);
+        //        // Add to the database
+        //        await context.ExchangeRate.AddAsync(exchangeRate);
+        //    }
 
-    //            if (json.success != true)
-    //            {
-    //                throw new Exception($"API Error: {json.error.type}");
-    //            }
-
-    //            // Deserialize rates into a dictionary
-    //            return JsonConvert.DeserializeObject<Dictionary<string, decimal>>(JsonConvert.SerializeObject(json.rates));
-    //        }
-    //    }
+        //    // Save changes
+        //    await context.SaveChangesAsync();
+        //}
 
         public async Task SaveRatesToDatabaseAsync(Dictionary<string, decimal> rates, DateTime date)
         {
-            using var context = new ExchangeRateDbContext();
-
-            // Create database if not exists
-            await context.Database.EnsureCreatedAsync();
-
-            foreach (var rate in rates)
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                var exchangeRate = new ExchangeRate
+                conn.Open();
+
+                foreach (var rate in rates)
                 {
-                    CurrencyCode = rate.Key,
-                    Rate = rate.Value,
-                    Date = date
-                };
-
-                // Add to the database
-                await context.ExchangeRate.AddAsync(exchangeRate);
+                    string query = "INSERT INTO Users (Id, Name, Email) VALUES (@Id, @Name, @Email)";
+                    using SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@CurrencyCode", rate.Key);
+                    cmd.Parameters.AddWithValue("@Rate", rate.Value);
+                    cmd.Parameters.AddWithValue("@Date", date);
+                    cmd.ExecuteNonQuery();
+                }
             }
-
-            // Save changes
-            await context.SaveChangesAsync();
         }
     }
 }

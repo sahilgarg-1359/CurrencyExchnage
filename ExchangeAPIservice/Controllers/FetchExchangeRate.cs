@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 [Route("[Controllers]")]
 public class FetchExchangeRate : ControllerBase
 {
-
     public async Task<Dictionary<string, decimal>> LoadRatesAsync(string date)
     {
         string url = $"{AppSettingConfig.Base_Url}{date}?access_key={AppSettingConfig.Api_Key}";
@@ -22,16 +21,14 @@ public class FetchExchangeRate : ControllerBase
         }
 
         string responseData = await response.Content.ReadAsStringAsync();
-        dynamic json = JsonConvert.DeserializeObject(responseData);
+        //dynamic json = JsonConvert.DeserializeObject(responseData);
 
-        if (json?.success != true)
-        {
-            throw new Exception($"API Error: {json?.error.type}");
-        }
 
 
         // Deserialize rates into a dictionary
-        return JsonConvert.DeserializeObject<Dictionary<string, double>>(JsonConvert.SerializeObject(json?.rates));
+        //return JsonConvert.DeserializeObject<Dictionary<string, double>>(JsonConvert.SerializeObject(json?.rates));
+        // Deserialize rates into a dictionary
+        return JsonConvert.DeserializeObject<Dictionary<string, decimal>> (responseData);
     }
 }
 
