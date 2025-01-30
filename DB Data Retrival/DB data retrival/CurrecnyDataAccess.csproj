@@ -13,4 +13,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ExchangeAPIservice\ExchangeAPIservice.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-class Program
+public partial class Program
 {
-    static async Task Main()
+    private Dictionary<string, double> exchangeRates;
+
+    public async Task Main()
     {
     
         try
@@ -14,7 +16,7 @@ class Program
             string fromCurrency = Console.ReadLine().ToUpper();
 
             Console.Write("Enter the target currency code: ");
-            string toCurrency = Console.ReadLine().ToUpper();
+            string toCurrency = Console.ReadLine()?.ToUpper();
 
 
             Console.Write("Enter the amount: ");
@@ -22,8 +24,6 @@ class Program
 
             Console.Write("Do you want exchange rate by any specific Date: ");
             string answer = Console.ReadLine();
-
-            FetchExchangeRate converter = new FetchExchangeRate();
             string date = "latest";
             if (answer == "YES")
             {
@@ -33,9 +33,11 @@ class Program
             }
 
             Console.WriteLine("Fetch latest exchange rates-");
-            await converter.LoadRatesAsync(date);
+            FetchExchangeRate converter = new FetchExchangeRate();
 
-            double result = converter.Convert(fromCurrency, toCurrency, amount);
+            var exchangeRates = await converter.LoadRatesAsync(date);
+
+            double result = ConvertCurrency(fromCurrency, toCurrency, amount);
 
             Console.WriteLine($"\n{amount} {fromCurrency} is equal to {result:F2} {toCurrency}.");
         }
@@ -44,4 +46,22 @@ class Program
             Console.WriteLine($"\nError: {e.Message}");
         }
     }
+
+    public double ConvertCurrency(string firstCurrency, string secondCurrency, double amount)
+    {
+        if (!exchangeRates.ContainsKey(firstCurrency))
+        {
+            throw new ArgumentException($"Invalid currency code: {firstCurrency}");
+        }
+        if (!exchangeRates.ContainsKey(secondCurrency))
+        {
+            throw new ArgumentException($"Invalid currency code: {secondCurrency}");
+        }
+
+        // Convert from the source currency to EUR, then to the target currency
+        double amountInBase = amount / exchangeRates[firstCurrency];
+        double convertedAmount = amountInBase * exchangeRates[secondCurrency];
+        return convertedAmount;
+    }
+
 }

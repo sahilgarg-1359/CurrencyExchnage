@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyExchange", "Currenc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExchangeAPIservice", "ExchangeAPIservice\ExchangeAPIservice.csproj", "{AAB1DA78-5F5F-47DD-A1FD-EF557BBBF2AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB data retrival", "DB Data Retrival\DB data retrival\DB data retrival.csproj", "{B81C50DC-EE34-4B54-8E1B-B23EC82E2ABA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrecnyDataAccess", "DB Data Retrival\DB data retrival\CurrecnyDataAccess.csproj", "{B81C50DC-EE34-4B54-8E1B-B23EC82E2ABA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,6 +10,7 @@
   <ItemGroup>
     <Compile Remove="CurrencyConverter.cs" />
     <Compile Remove="FetchExchangeRate.cs" />
+    <Compile Remove="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExchangeAPIservice\ExchangeAPIservice.csproj" />

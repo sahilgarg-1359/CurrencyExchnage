@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using ExchangeAPIservice;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -9,53 +6,32 @@ using Newtonsoft.Json;
 [Route("[Controllers]")]
 public class FetchExchangeRate : ControllerBase
 {
-    private const string FixerApiKey = "20b8a5d34f31e82e810157230e3a7d53";
-    private const string BaseUrl = "http://data.fixer.io/api/";
-    private Dictionary<string, double> exchangeRates;
 
-    public async Task LoadRatesAsync(string date)
+    public async Task<Dictionary<string, decimal>> LoadRatesAsync(string date)
     {
-
-        string url = $"{BaseUrl}{date}?access_key={FixerApiKey}";
+        string url = $"{AppSettingConfig.Base_Url}{date}?access_key={AppSettingConfig.Api_Key}";
         Console.WriteLine(url);
 
-        using (HttpClient client = new HttpClient())
+        using HttpClient client = new();
+
+        HttpResponseMessage response = await client.GetAsync(url);
+
+        if (!response.IsSuccessStatusCode)
         {
-            HttpResponseMessage response = await client.GetAsync(url);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception($"Unable to fetch exhange rate: {response.StatusCode}");
-            }
-
-            string responseData = await response.Content.ReadAsStringAsync();
-            dynamic json = JsonConvert.DeserializeObject(responseData);
-
-            if (json.success != true)
-            {
-                throw new Exception($"API Error: {json.error.type}");
-            }
-
-            // Deserialize rates into a dictionary
-            exchangeRates = JsonConvert.DeserializeObject<Dictionary<string, double>>(JsonConvert.SerializeObject(json.rates));
-        }
-    }
-
-    public double Convert(string firstCurrency, string secondCurrency, double amount)
-    {
-        if (!exchangeRates.ContainsKey(firstCurrency))
-        {
-            throw new ArgumentException($"Invalid currency code: {firstCurrency}");
-        }
-        if (!exchangeRates.ContainsKey(secondCurrency))
-        {
-            throw new ArgumentException($"Invalid currency code: {secondCurrency}");
+            throw new Exception($"Unable to fetch exhange rate: {response.StatusCode}");
         }
 
-        // Convert from the source currency to EUR, then to the target currency
-        double amountInBase = amount / exchangeRates[firstCurrency];
-        double convertedAmount = amountInBase * exchangeRates[secondCurrency];
-        return convertedAmount;
+        string responseData = await response.Content.ReadAsStringAsync();
+        dynamic json = JsonConvert.DeserializeObject(responseData);
+
+        if (json?.success != true)
+        {
+            throw new Exception($"API Error: {json?.error.type}");
+        }
+
+
+        // Deserialize rates into a dictionary
+        return JsonConvert.DeserializeObject<Dictionary<string, double>>(JsonConvert.SerializeObject(json?.rates));
     }
 }
 

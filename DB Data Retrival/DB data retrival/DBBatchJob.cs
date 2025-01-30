@@ -2,16 +2,18 @@
 
 class DBBatchJob
 {
-    static async Task Main()
+     public static async Task Main()
     {
         Console.WriteLine("Starting Batch Job");
 
         try
         {
-            ExchangeRateUpdater updater = new ExchangeRateUpdater();
+            FetchExchangeRate exchangeRate = new();
+            ExchangeRateUpdater updater = new();
 
             Console.WriteLine("Fetching latest exchange rates");
-            var rates = await updater.FetchLatestRatesAsync();
+
+            var rates = await exchangeRate.LoadRatesAsync(null);
             await updater.SaveRatesToDatabaseAsync(rates, DateTime.UtcNow);
             Console.WriteLine("Exchange rates updated successfully.");
         }
